@@ -73,7 +73,10 @@ int CLevels::Add(LevelsStructure &level){
                 insert.Add( "ThisStep",      level.this_step );
                 insert.Add( "Ask",           level.ask );
                 insert.Add( "Bid",           level.bid );
-   result=m_pDb.Insert( m_tbl, insert);
+   int last_insert_row_id=m_pDb.Insert( m_tbl, insert);
+   
+   
+   result = (int)GetValue("_ID","ROWID="+(string)last_insert_row_id);
    return( result );
 }
 
@@ -87,7 +90,7 @@ void CLevels::StdColumns( CArrayKeyVal &columns ){
    m_qb.buildColumn( columns,"DTY",       SQLITE_TYPE_INTEGER);
    m_qb.buildColumn( columns,"LOT",       SQLITE_TYPE_FLOAT );
    m_qb.buildColumn( columns,"NET_ID",    SQLITE_TYPE_INTEGER,false,false,false,true );
-   m_qb.buildColumn( columns, "DONT_SEND",     SQLITE_TYPE_INTEGER);
+   m_qb.buildColumn( columns,"DONT_SEND",     SQLITE_TYPE_INTEGER);
    m_qb.buildColumn( columns,"TP_NET_ID", SQLITE_TYPE_INTEGER);
    //m_qb.buildColumnDefaultValue( columns, (string)0 );
    m_qb.buildColumn( columns,"IS_ADD_LEVEL", SQLITE_TYPE_INTEGER );

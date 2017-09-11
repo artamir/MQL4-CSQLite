@@ -24,4 +24,16 @@ class CSubsystem{
    public:
    virtual bool   Init(CSQLiteBase *pDb)              {m_pDb=pDb; return(true);}
    virtual string GetTableName(void)                  {return(m_tbl);          }
+   virtual string GetValue(string column="_ID", string where="_ID=1");
 };
+
+string CSubsystem::GetValue(string column="_ID",string where="_ID=1"){
+   CSQLiteCursor* pCursor = m_pDb.Query(column, GetTableName(), where);
+   
+   string result = pCursor.GetValue(column);
+   if(CheckPointer(pCursor)==POINTER_DYNAMIC){
+      delete pCursor;
+   } 
+   
+   return(result);
+}
